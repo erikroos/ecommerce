@@ -1,0 +1,66 @@
+<h2>Create new Product</h2>
+
+<div class="form-group">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div ngModelGroup="product">
+
+      <div class="product-name">
+        <input type="text"
+                placeholder="Product name"
+                required
+                name="productName"
+                formControlName="name">
+      </div>
+      <div class="error" *ngIf="name.invalid && (name.dirty || name.touched)">
+        Name is required
+      </div>
+
+      <div class="product-price">
+        <input type="number"
+               placeholder="Product price"
+               required
+               min="1"
+               name="productPrice"
+               formControlName="price">
+      </div>
+      <div class="error" *ngIf="price.invalid && (price.dirty || price.touched)">
+        <div *ngIf="price.errors && price.errors['required']">
+          Price is required
+        </div>
+        <div *ngIf="price.errors && price.errors['min']">
+          Price must be greater than 0
+        </div>
+      </div>
+
+      <div class="product-image">
+        <input type="url"
+               placeholder="Product image"
+               required
+               pattern="^http(s?)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(/\S*)?$"
+               name="productImage"
+               formControlName="image">
+      </div>
+      <div class="error" *ngIf="image.invalid && (image.dirty || image.touched)">
+        <div *ngIf="image.errors && image.errors['required']">
+          Image URL is required
+        </div>
+        <div *ngIf="image.errors && image.errors['pattern']">
+          Image URL must be a valid URL
+        </div>
+      </div>
+
+      <div class="product-sale">
+        <input type="checkbox"
+               name="productIsOnSale"
+               formControlName="isOnSale">
+        Is on sale
+      </div>
+
+    </div>
+    <button type="submit" [disabled]="productForm.status == 'INVALID'">Create</button>
+  </form>
+</div>
+
+<p>Form control value: {{productForm.value | json}}</p>
+<p>Form control status: {{productForm.status | json}}</p>
+<p>Product value: {{this.product | json}}</p>
